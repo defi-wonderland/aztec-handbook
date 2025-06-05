@@ -1,6 +1,6 @@
 # Aztec Handbook by Wonderland
 
-This repository contains the Onboarding to Aztec by Wonderland, a documentation site built with Docusaurus. The OP handbook serves as a central knowledge base for the researchers, devs and architects involved in the protocol.
+This repository contains the Onboarding to Aztec by Wonderland, a documentation site built with Docusaurus. The Aztec handbook serves as a central knowledge base for the researchers, devs and architects involved in the protocol.
 
 ## Structure
 
@@ -37,7 +37,7 @@ This will start a local development server and open your browser. Changes are re
 To create a production build:
 
 ```bash
-cd op-handbook
+cd aztec-handbook
 npm run build
 ```
 
