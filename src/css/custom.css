@@ -1,0 +1,680 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root, html[data-theme='dark'] {
+  /* Brand Colors */
+  --op-dark: #0E1528;
+  --op-light: #1A2238;
+  --op-red: #FF0420;
+  --op-red-dark: #e6001c;
+  --op-red-darker: #d9001a;
+  --op-red-darkest: #b30016;
+  --op-red-light: #ff1a34;
+  --op-red-lighter: #ff263f;
+  --op-red-lightest: #ff475d;
+  --wonderland-dark: #0E152C;
+  --wonderland-lila: #a371ce;
+
+  /* Theme Colors */
+  --ifm-color-primary: var(--op-red);
+  --ifm-color-primary-dark: var(--op-red-dark);
+  --ifm-color-primary-darker: var(--op-red-darker);
+  --ifm-color-primary-darkest: var(--op-red-darkest);
+  --ifm-color-primary-light: var(--op-red-light);
+  --ifm-color-primary-lighter: var(--op-red-lighter);
+  --ifm-color-primary-lightest: var(--op-red-lightest);
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-background-color: var(--op-dark);
+  --ifm-background-surface-color: var(--op-dark);
+  --ifm-navbar-background-color: rgba(14, 21, 44, 0.95);
+  --ifm-footer-background-color: rgba(14, 21, 44, 0.95);
+  --ifm-dropdown-background-color: var(--op-dark);
+  --ifm-card-background-color: var(--op-dark);
+  --ifm-blockquote-border-color: var(--op-red);
+  --ifm-breadcrumb-item-background-active: var(--op-light);
+  --ifm-navbar-search-input-icon: url("data:image/svg+xml;utf8,<svg fill='white' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' height='16px' width='16px'><path d='M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z' /></svg>");
+  --ifm-navbar-search-input-background-color: var(--op-light);
+}
+
+/* Sharp Grotesk Font Faces */
+@font-face {
+  font-family: 'Sharp Grotesk';
+  src: url('/fonts/SharpGrotesk-Light15.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sharp Grotesk';
+  src: url('/fonts/SharpGrotesk-LightItalic10.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sharp Grotesk';
+  src: url('/fonts/SharpGrotesk-Medium25.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Pathway+Extreme:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap');
+
+/* Global styles */
+html {
+  height: 100%;
+  background-color: var(--op-dark);
+  background-image: url('/img/bg/optimism-handbook.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+@media (max-width: 1024px) {
+  html {
+    background-size: 110%;
+    background-position: right center;
+  }
+}
+
+@media (max-width: 600px) {
+  html {
+    background-size: 45rem;
+    background-position: 100% 59%;
+  }
+}
+
+body {
+  font-family: 'Sharp Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+  color: #ffffff;
+  font-weight: 300;
+  min-height: 100vh;
+  background: transparent;
+}
+
+::selection {
+  background: var(--wonderland-lila);
+  color: var(--wonderland-dark);
+}
+
+::-moz-selection {
+  background: var(--wonderland-lila);
+  color: var(--wonderland-dark);
+}
+
+/* Main content layout */
+.main-wrapper {
+  background: transparent;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  background: transparent;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content area */
+article {
+  background: transparent;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-doc-markdown {
+  flex: 1 0 auto;
+}
+
+/* Typography */
+h1 {
+  font-family: 'Sharp Grotesk', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  font-style: italic;
+  color: #ffffff;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+h2, h3, h4, h5, h6 {
+  font-family: 'Pathway Extreme', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.3rem;
+  margin-top: 0.6rem;
+  padding-bottom: 0.3rem;
+}
+
+/* Specific heading styles */
+.theme-doc-markdown h1 {
+  font-style: italic;
+  font-size: 4.5rem;
+  line-height: 1;
+}
+
+@media (max-width: 1024px) {
+  .theme-doc-markdown h1 {
+    font-size: 3.5rem;
+  }
+}
+
+.theme-doc-markdown h2 {
+  font-size: 2rem;
+}
+
+.theme-doc-markdown h3 {
+  font-size: 1.6rem;
+}
+
+.theme-doc-markdown h4 {
+  font-size: 1.4rem;
+}
+
+.theme-doc-markdown h5 {
+  font-size: 1.2rem;
+}
+
+.theme-doc-markdown h6 {
+  font-size: 1.1rem;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* Paragraphs */
+p,
+.theme-doc-markdown,
+.markdown {
+  font-family: 'Pathway Extreme', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 0.3rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Add minimal space between sections */
+.theme-doc-markdown > div > * + * {
+  margin-top: 0.3rem;
+}
+
+/* Light bold text */
+strong {
+  font-weight: 500;
+}
+
+b {
+  font-weight: 400;
+}
+
+/* Article content */
+.theme-doc-markdown {
+  font-weight: 300;
+}
+
+.markdown {
+  font-weight: 300;
+}
+
+/* Override any white backgrounds */
+[class*='docMainContainer'],
+[class*='docItemContainer'],
+[class*='docSidebarContainer'],
+.theme-doc-markdown,
+.theme-doc-toc-desktop,
+.tabs-container,
+.markdown {
+  background: transparent !important;
+}
+
+/* Navbar styling */
+.navbar {
+  background: rgba(14, 21, 44, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
+  height: auto;
+}
+
+/* Center logo */
+.navbar__inner {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.navbar__brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-style: italic;
+  padding: 0.5rem 0;
+}
+
+.navbar__items {
+  flex: 1;
+  padding: 0.5rem 0;
+}
+
+.navbar__items--left {
+  justify-content: flex-start;
+}
+
+.navbar__items--right {
+  justify-content: flex-end;
+}
+
+.navbar__link {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar__link:hover {
+  color: #ffffff;
+}
+
+.navbar-logo-center {
+  height: 24px;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .navbar__items {
+    padding: 0;
+  }
+
+  .navbar__brand {
+    padding: 0;
+  }
+
+  .navbar-logo-center {
+    height: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar__inner {
+    padding: 0;
+  }
+
+  .navbar-logo-center {
+    height: 18px;
+  }
+}
+
+/* Search input */
+.navbar__search-input {
+  outline-color: white;
+}
+
+.navbar.navbar--dark {
+  --ifm-navbar-search-input-background-color: var(--op-light);
+}
+
+/* Sidebar styling */
+.theme-doc-sidebar-container {
+  background: rgba(14, 21, 44, 0.95) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.menu {
+  background: var(--op-dark) !important;
+  padding: 0;
+}
+
+/* Make all menu links consistent */
+.menu__link {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+  font-size: 1rem !important;
+  font-style: normal;
+  will-change: color, transform;
+  transition: color var(--ifm-transition-fast) ease, transform var(--ifm-transition-slow) ease;
+  position: relative;
+  padding: 0.35rem 1rem;
+  border-radius: 0;
+}
+
+.menu__list {
+  margin: 0;
+  padding: 0;
+}
+
+.menu__list .menu__link:hover {
+  background: unset;
+  color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.025);
+  transition: color var(--ifm-transition-fast) ease, transform var(--ifm-transition-slow) ease;
+}
+
+.menu__list .menu__link:active,
+.menu__list .menu__link:focus {
+  transform: scale(1);
+}
+
+.menu__link--active {
+  border-radius: 0;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 1);
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: unset;
+}
+
+.menu__list-item-collapsible:hover {
+  background: unset;
+}
+
+.menu__list-item-collapsible .menu__caret {
+  background: unset;
+}
+
+.menu__list-item-collapsible--active {
+  background: unset;
+}
+
+/* Regular menu items (non-collapsible) should align with nested items */
+.menu__list .menu__link:not(.menu__list-item-collapsible .menu__link) {
+  padding-left: 1rem;
+}
+
+/* Category icons - only for main categories */
+.menu__list-item-collapsible .menu__link {
+  padding-left: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Sidebar titles */
+.menu__link {
+  font-family: 'Pathway Extreme', system-ui, -apple-system, sans-serif !important;
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Sidebar category titles */
+.menu__list-item-collapsible .menu__link {
+  font-family: 'Pathway Extreme', system-ui, -apple-system, sans-serif !important;
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Table of contents */
+.table-of-contents {
+  font-family: 'Pathway Extreme', system-ui, -apple-system, sans-serif;
+  padding: 0.5rem 0 0.5rem 1rem;
+  margin-left: 1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.table-of-contents__link {
+  display: block;
+  padding: 0.4rem 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.table-of-contents__link:hover {
+  color: #ffffff;
+  text-decoration: none;
+  transform: translateX(4px);
+}
+
+.table-of-contents__link--active {
+  color: #ffffff;
+}
+
+/* Make TOC sticky on desktop */
+@media (min-width: 997px) {
+  .theme-doc-toc {
+    position: sticky;
+    top: calc(var(--ifm-navbar-height) + 1rem);
+    max-height: calc(100vh - var(--ifm-navbar-height) - 2rem);
+    overflow-y: auto;
+  }
+}
+
+/* Hide TOC on mobile in a clean way */
+@media (max-width: 996px) {
+  .theme-doc-toc-mobile {
+    display: none;
+  }
+}
+
+/* Breadcrumbs */
+.breadcrumbs__link {
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.04em;
+}
+
+.breadcrumbs__link:hover {
+  color: #ffffff;
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: #ffffff;
+  font-weight: 300;
+  background: var(--op-light);
+}
+
+/* Links in markdown content */
+.markdown a:not(.card),
+.theme-doc-markdown a:not(.card) {
+  color: var(--wonderland-lila);
+  background: linear-gradient(currentColor 0 0) 
+    bottom left/
+    var(--underline-width, 0%) 1px
+    no-repeat;
+  will-change: color, background-size;
+  transition: color 0.2s ease, background-size 0.3s ease-in-out;
+}
+
+.markdown a:hover,
+.theme-doc-markdown a:hover {
+  color: var(--wonderland-lila);
+  opacity: 0.8;
+  --underline-width: 100%;
+  transition: color 0.2s ease, background-size 0.2s ease-in;
+}
+
+/* Details and Summary styling */
+.markdown details,
+.theme-doc-markdown details {
+  border: 1px solid var(--wonderland-lila);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: rgba(163, 113, 206, 0.05);
+}
+
+.markdown summary,
+.theme-doc-markdown summary {
+  color: var(--wonderland-lila);
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.markdown summary:hover,
+.theme-doc-markdown summary:hover {
+  opacity: 0.8;
+}
+
+/* Code blocks */
+.theme-code-block {
+  background-color: var(--op-light) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin: 1rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+.theme-code-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--op-dark);
+  z-index: -1;
+}
+
+.prism-code {
+  background-color: transparent !important;
+  padding: 1rem !important;
+}
+
+/* Footer styling */
+.footer {
+  background: var(--op-dark);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer__link-item {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footer__link-item:hover {
+  color: #ffffff;
+}
+
+.footer__copyright {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 600px) {
+  .footer {
+    padding: 0.5rem 0;
+  }
+}
+
+/* Mobile navbar adjustments */
+@media (max-width: 996px) {
+  .navbar {
+    padding: 0 16px;
+    min-height: 62px;
+  }
+
+  .navbar-sidebar {
+    z-index: 9999 !important; 
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 80vw;
+    background: rgba(14, 21, 44, 0.95) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .navbar-sidebar__backdrop {
+    z-index: 9998 !important; 
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+  }
+
+  .main-wrapper,
+  #__docusaurus {
+    position: relative;
+    z-index: 0 !important;
+  }
+}
+
+/* Button styling in documentation */
+.button, .pagination-nav__label, .pagination-nav__link {
+  font-family: 'Pathway Extreme', system-ui, -apple-system, sans-serif !important;
+  font-weight: 500;
+}
+
+.pagination-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: var(--ifm-global-spacing) 0;
+}
+
+.pagination-nav__link {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--ifm-pagination-nav-border-radius);
+  display: block;
+  height: 100%;
+  line-height: var(--ifm-heading-line-height);
+  padding: var(--ifm-global-spacing);
+  transition: border-color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  min-width: 300px;
+}
+
+.pagination-nav__link--prev {
+  grid-column: 1 / 2;
+}
+
+.pagination-nav__link--next {
+  grid-column: 2 / 3;
+  text-align: right;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--op-red);
+  color: #ffffff;
+  text-decoration: none;
+  background: rgba(255, 4, 32, 0.1);
+}
+
+.pagination-nav__sublabel {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.25rem;
+}
+
+.pagination-nav__label {
+  margin: 0;
+  color: inherit;
+}
+
+@media (max-width: 480px) {
+  .pagination-nav {
+    grid-template-columns: 1fr;
+    gap: var(--ifm-global-spacing);
+  }
+
+  .pagination-nav__link {
+    min-width: unset;
+  }
+
+  .pagination-nav__link--prev,
+  .pagination-nav__link--next {
+    grid-column: 1;
+  }
+}
+
+/* Hide last updated timestamp */
+.theme-last-updated {
+  display: none !important;
+}
+
+.theme-edit-this-page {
+  display: none !important;
+}

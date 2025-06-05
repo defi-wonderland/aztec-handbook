@@ -1,0 +1,265 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.main {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 2rem 0;
+  background: url('/img/bg/optimism-handbook.png') center top/cover no-repeat;
+  background-attachment: fixed;
+}
+
+.centerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 90%;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding-bottom: 4rem;
+}
+
+.heroTitle {
+  width: 100%;
+  max-width: 600px;
+  padding: 0 1rem;
+  margin-top: 2rem;
+}
+
+.heroImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  animation: fadeIn 1s ease-out;
+}
+
+.description {
+  font-family: 'Sharp Grotesk', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  animation: fadeIn 1s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+.buttonContainer {
+  margin: 1rem 0;
+  animation: fadeIn 1s ease-out 0.5s forwards;
+  opacity: 0;
+  position: relative;
+}
+
+.buttonLink {
+  display: block;
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.buttonLink:hover {
+  filter: drop-shadow(0 0 20px rgba(255, 4, 32, 0.3))
+         drop-shadow(0 0 15px rgba(255, 4, 32, 0.3));
+  transform: translateY(-2px);
+}
+
+.buttonImage {
+  height: auto;
+  max-width: 300px;
+  width: 100%;
+  transition: all 0.4s ease;
+}
+
+.buttonLink:hover .buttonImage {
+  filter: brightness(1.1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+.categoryCards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 2rem;
+  width: 100%;
+  margin-top: 3rem;
+  padding: 0 2rem;
+  margin-bottom: 2rem;
+  animation: fadeIn 1s ease-out 0.7s forwards;
+  opacity: 0;
+}
+
+.categoryCard {
+  background: rgba(14, 21, 44, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex: 1 1 200px;
+  max-width: 300px;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  text-decoration: none !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.categoryCard::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    89.99deg,
+    var(--ifm-color-primary) 0%,
+    var(--ifm-color-primary-light) 100%
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.categoryCard:hover::after {
+  transform: scaleX(1);
+}
+
+.categoryCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 4px 30px rgba(255, 4, 32, 0.2),
+    0 0 20px rgba(255, 4, 32, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(14, 21, 44, 0.8);
+}
+
+.categoryIcon {
+  width: 40px;
+  height: 40px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.categoryCard:hover .categoryIcon {
+  transform: scale(1.1) rotate(-5deg);
+  filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+.categoryTitle {
+  font-family: 'Sharp Grotesk', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 2rem;
+  line-height: 1;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  text-decoration: none !important;
+}
+
+.categoryTitle::after {
+  display: none;
+}
+
+.categoryCard:hover .categoryTitle {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.08em;
+  color: var(--ifm-color-primary-lighter);
+}
+
+
+/* Navbar styling */
+.navbar {
+  background: rgba(14, 21, 44, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
+  height: auto;
+}
+
+/* Center logo */
+.navbar__inner {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1440px) {
+  .categoryCard {
+    flex: 1 1 240px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main {
+    padding: 1rem 0;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .centerContent {
+    padding-bottom: 2rem;
+  }
+
+  .categoryCard {
+    padding: 1.5rem;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    margin: 1.5rem auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .categoryCards {
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  .centerContent {
+    max-width: 95%;
+  }
+
+  .description {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .categoryTitle {
+    font-size: 1.75rem;
+  }
+}
