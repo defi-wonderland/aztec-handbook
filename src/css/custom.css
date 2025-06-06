@@ -7,38 +7,51 @@
 /* You can override the default Infima variables here. */
 :root, html[data-theme='dark'] {
   /* Brand Colors */
-  --op-dark: #0E1528;
-  --op-light: #1A2238;
-  --op-red: #FF0420;
-  --op-red-dark: #e6001c;
-  --op-red-darker: #d9001a;
-  --op-red-darkest: #b30016;
-  --op-red-light: #ff1a34;
-  --op-red-lighter: #ff263f;
-  --op-red-lightest: #ff475d;
   --wonderland-dark: #0E152C;
   --wonderland-lila: #a371ce;
+  
+  /* Aztec Colors */
+  --aztec-purple-70: #715ec2;
+  --aztec-purple-60: #8c7eff;
+  --aztec-pui-70: #321e4c;
+  --aztec-purple-05: #f7f9ff;
+  --aztec-pui-50: #706383;
+  --aztec-black: #000;
+  --aztec-pui-30: #afa8ba;
+  --aztec-white: white;
+  --aztec-pui-60: #514167;
+  --aztec-pui-40: #8f869e;
+  --aztec-pui-20: #cecbd5;
+  --aztec-pui-10: #eeedf1;
+  --aztec-purple-100: #09060d;
+  --aztec-purple-90: #302249;
+  --aztec-purple-80: #534086;
+  --aztec-purple-50: #9894ff;
+  --aztec-purple-40: #abaeff;
+  --aztec-purple-30: #c3caff;
+  --aztec-purple-20: #dce3ff;
+  --aztec-purple-10: #eaeeff;
 
   /* Theme Colors */
-  --ifm-color-primary: var(--op-red);
-  --ifm-color-primary-dark: var(--op-red-dark);
-  --ifm-color-primary-darker: var(--op-red-darker);
-  --ifm-color-primary-darkest: var(--op-red-darkest);
-  --ifm-color-primary-light: var(--op-red-light);
-  --ifm-color-primary-lighter: var(--op-red-lighter);
-  --ifm-color-primary-lightest: var(--op-red-lightest);
+  --ifm-color-primary: var(--aztec-purple-60);
+  --ifm-color-primary-dark: var(--aztec-purple-70);
+  --ifm-color-primary-darker: var(--aztec-purple-80);
+  --ifm-color-primary-darkest: var(--aztec-purple-90);
+  --ifm-color-primary-light: var(--aztec-purple-50);
+  --ifm-color-primary-lighter: var(--aztec-purple-40);
+  --ifm-color-primary-lightest: var(--aztec-purple-30);
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  --ifm-background-color: var(--op-dark);
-  --ifm-background-surface-color: var(--op-dark);
-  --ifm-navbar-background-color: rgba(14, 21, 44, 0.95);
-  --ifm-footer-background-color: rgba(14, 21, 44, 0.95);
-  --ifm-dropdown-background-color: var(--op-dark);
-  --ifm-card-background-color: var(--op-dark);
-  --ifm-blockquote-border-color: var(--op-red);
-  --ifm-breadcrumb-item-background-active: var(--op-light);
+  --ifm-background-color: var(--aztec-purple-100);
+  --ifm-background-surface-color: var(--aztec-purple-100);
+  --ifm-navbar-background-color: rgba(9, 6, 13, 0.95);
+  --ifm-footer-background-color: rgba(9, 6, 13, 0.95);
+  --ifm-dropdown-background-color: var(--aztec-purple-100);
+  --ifm-card-background-color: var(--aztec-purple-100);
+  --ifm-blockquote-border-color: var(--aztec-purple-60);
+  --ifm-breadcrumb-item-background-active: var(--aztec-purple-90);
   --ifm-navbar-search-input-icon: url("data:image/svg+xml;utf8,<svg fill='white' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' height='16px' width='16px'><path d='M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z' /></svg>");
-  --ifm-navbar-search-input-background-color: var(--op-light);
+  --ifm-navbar-search-input-background-color: var(--aztec-purple-90);
 }
 
 /* Sharp Grotesk Font Faces */
@@ -71,8 +84,8 @@
 /* Global styles */
 html {
   height: 100%;
-  background-color: var(--op-dark);
-  background-image: url('/img/bg/optimism-handbook.png');
+  background-color: var(--aztec-purple-100);
+  background-image: url('/img/bg/aztec-handbook.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -136,6 +149,7 @@ article {
 
 .theme-doc-markdown {
   flex: 1 0 auto;
+  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
 }
 
 /* Typography */
@@ -241,7 +255,7 @@ b {
 
 /* Navbar styling */
 .navbar {
-  background: rgba(14, 21, 44, 0.95) !important;
+  background: var(--wonderland-dark) !important;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1rem 2rem;
@@ -321,19 +335,24 @@ b {
 }
 
 .navbar.navbar--dark {
-  --ifm-navbar-search-input-background-color: var(--op-light);
+  --ifm-navbar-search-input-background-color: var(--aztec-purple-90);
 }
 
 /* Sidebar styling */
+.theme-doc-sidebar-container,
+.menu,
+.navbar-sidebar,
+.navbar-sidebar__backdrop {
+  background: var(--wonderland-dark) !important;
+}
+
 .theme-doc-sidebar-container {
-  background: rgba(14, 21, 44, 0.95) !important;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
 .menu {
-  background: var(--op-dark) !important;
   padding: 0;
 }
 
@@ -371,6 +390,7 @@ b {
   border-radius: 0;
   font-weight: 300;
   color: rgba(255, 255, 255, 1);
+  background: var(--aztec-purple-90);
 }
 
 .menu__link--active:not(.menu__link--sublist) {
@@ -471,7 +491,7 @@ b {
 .breadcrumbs__item--active .breadcrumbs__link {
   color: #ffffff;
   font-weight: 300;
-  background: var(--op-light);
+  background: var(--aztec-purple-90);
 }
 
 /* Links in markdown content */
@@ -519,7 +539,7 @@ b {
 
 /* Code blocks */
 .theme-code-block {
-  background-color: var(--op-light) !important;
+  background-color: var(--aztec-purple-90) !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   margin: 1rem 0;
@@ -534,7 +554,7 @@ b {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--op-dark);
+  background: var(--aztec-purple-100);
   z-index: -1;
 }
 
@@ -545,7 +565,7 @@ b {
 
 /* Footer styling */
 .footer {
-  background: var(--op-dark);
+  background: var(--wonderland-dark);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -582,7 +602,7 @@ b {
     left: 0;
     height: 100vh;
     width: 80vw;
-    background: rgba(14, 21, 44, 0.95) !important;
+    background: rgba(9, 6, 13, 0.95) !important;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
@@ -637,10 +657,10 @@ b {
 }
 
 .pagination-nav__link:hover {
-  border-color: var(--op-red);
+  border-color: var(--wonderland-lila);
   color: #ffffff;
   text-decoration: none;
-  background: rgba(255, 4, 32, 0.1);
+  background: rgba(163, 113, 206, 0.1);
 }
 
 .pagination-nav__sublabel {

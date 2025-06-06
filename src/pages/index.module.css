@@ -14,7 +14,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   padding: 2rem 0;
-  background: url('/img/bg/optimism-handbook.png') center top/cover no-repeat;
+  background: url('/img/bg/aztec-handbook.png') center top/cover no-repeat;
   background-attachment: fixed;
 }
 
@@ -71,8 +71,8 @@
 }
 
 .buttonLink:hover {
-  filter: drop-shadow(0 0 20px rgba(255, 4, 32, 0.3))
-         drop-shadow(0 0 15px rgba(255, 4, 32, 0.3));
+  filter: drop-shadow(0 0 20px rgba(140, 126, 255, 0.3))
+         drop-shadow(0 0 15px rgba(140, 126, 255, 0.3));
   transform: translateY(-2px);
 }
 
@@ -84,7 +84,7 @@
 }
 
 .buttonLink:hover .buttonImage {
-  filter: brightness(1.1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+  filter: brightness(1.1) drop-shadow(0 0 8px var(--aztec-purple-60, #8c7eff));
 }
 
 .categoryCards {
@@ -142,9 +142,9 @@
 .categoryCard:hover {
   transform: translateY(-4px);
   box-shadow: 
-    0 4px 30px rgba(255, 4, 32, 0.2),
-    0 0 20px rgba(255, 4, 32, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
+    0 4px 30px rgba(140, 126, 255, 0.2),
+    0 0 20px rgba(140, 126, 255, 0.2);
+  border-color: rgba(140, 126, 255, 0.3);
   background: rgba(14, 21, 44, 0.8);
 }
 
@@ -159,7 +159,7 @@
 
 .categoryCard:hover .categoryIcon {
   transform: scale(1.1) rotate(-5deg);
-  filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+  filter: brightness(0) invert(1) drop-shadow(0 0 8px var(--aztec-purple-60, #8c7eff));
 }
 
 .categoryTitle {
@@ -183,7 +183,7 @@
 }
 
 .categoryCard:hover .categoryTitle {
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 15px var(--aztec-purple-60, #8c7eff);
   letter-spacing: 0.08em;
   color: var(--ifm-color-primary-lighter);
 }

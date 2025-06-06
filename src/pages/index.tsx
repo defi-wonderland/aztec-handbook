@@ -6,24 +6,29 @@ import styles from './index.module.css';
 
 const categories = [
   {
-    title: 'STACK',
+    title: 'Background',
+    icon: '/img/specialization.svg',
+    href: '/docs/previous-knowledge/overview',
+  },
+  {
+    title: 'Stack',
     icon: '/img/specialization.svg',
     href: '/docs/stack/overview',
   },
   {
-    title: 'INTEROP',
-    icon: '/img/interop.svg',
-    href: '/docs/interoperability/overview',
-  },
-  {
-    title: 'GOVERNANCE',
-    icon: '/img/governance.svg',
-    href: '/docs/governance/governance-overview',
-  },
-  {
-    title: 'PROCESSES',
+    title: 'Lifecycle',
     icon: '/img/processes.svg',
-    href: '/docs/processes/overview',
+    href: '/docs/lifecycle/overview',
+  },
+  {
+    title: 'Governance',
+    icon: '/img/governance.svg',
+    href: '/docs/governance/overview',
+  },
+  {
+    title: 'Privacy',
+    icon: '/img/specialization.svg',
+    href: '/docs/privacy/overview',
   },
 ];
 
@@ -37,10 +42,10 @@ function Home(): React.ReactElement {
       <main className={styles.main}>
         <div className={styles.centerContent}>
           <div className={styles.heroTitle}>
-            <img src="/img/logo/op.svg" alt="OP Handbook" className={styles.heroImage} />
+            <img src="/img/logo/aztec.svg" alt="OP Handbook" className={styles.heroImage} />
           </div>
           <p className={styles.description}>
-           New to Optimism? This handbook is your guide through all the things you need to know before you get started. Cheers!
+           New to Aztec? This handbook is your guide through all the things you need to know before you get started. Cheers!
           </p>
           <div className={styles.buttonContainer}>
             <Link to="/docs/welcome" className={styles.buttonLink}>

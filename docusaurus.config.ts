@@ -50,7 +50,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: "img/aztec-handbook-social.png",
+    image: "img/aztec-social-banner.png",
     navbar: {
       title: "",
       logo: {
