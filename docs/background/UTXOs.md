@@ -7,7 +7,7 @@ Each UTXO contains:
 - An encrypted payload (e.g. value, owner's public key, asset ID)
 - A commitment, which is a cryptographic hash that binds the **note** data and associated randomness.
 :::note concept
-We will define note in the following sections.
+For a detailed explanation of notes and their implementation, see the [Notes](./notes.md) section.
 :::
 - A position in a [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree) known as the note tree.
 - A reference to an owner who can later spend the UTXO via a Zero Knowledge Proof (Optional)
