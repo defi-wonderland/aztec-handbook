@@ -8,8 +8,8 @@ assignees: ''
 
 ---
 
-Thanks for helping us keep the OP Handbook sharp and functional 🧹  
-If something isn’t behaving the way it should — from broken links to rendering issues — use this template to help us fix it fast.
+Thanks for helping us keep the Aztec Handbook functional and updated  🧹  
+If something isn’t behaving the way it should: from broken links to rendering issues, use this template to help us fix it fast.
 
 ---
 
