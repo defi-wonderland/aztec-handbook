@@ -1,5 +1,21 @@
 # Overview
 
-As we learn about Aztec, we will encounter several concepts that are not typically found in a public blockchain environment. These include **notes**, **nullifiers**, and **UTXOs**. If you have experience with Bitcoin, you might find some concepts more familiar, but for those coming from an Ethereum background, they can be quite challenging. 
+As we begin learning about Aztec, we’ll encounter several concepts that differ significantly from what’s typically found in public blockchains like Ethereum. These include **notes**, **nullifiers**, and **UTXOs**, terms that might resonate with those who have experience with Bitcoin, but could feel unfamiliar to others.
 
-To facilitate our understanding, we will explore definitions of UTXOs, notes, nullifiers, zero-knowledge proofs, and zk circuits. Let's define these foundational concepts to begin our *privacy journey*.
+To understand why these concepts exist, it’s helpful to first grasp what makes Aztec different.
+
+We define **Aztec as a hybrid zero-knowledge blockchain**, designed to support both private and public smart contract execution. This model splits execution into two distinct environments:
+
+- **Private functions** are executed on the user’s own device within the **Private Execution Environment (PXE)**. These computations are never broadcast on-chain—instead, they produce *proofs* that attest to the correctness of the private execution.
+- **Public functions**, by contrast, are executed on-chain by the **Aztec Virtual Machine (AVM)**, a public environment conceptually similar to Ethereum’s EVM.
+
+A single Aztec transaction may begin with private logic in the PXE and then trigger public logic in the AVM. However, this flow is **directional**: private functions can enqueue public ones, but public functions **CANNOT** call back into private code. Which ensures that private data remains strictly client-side and controlled by the user.
+
+Aztec also maintains **two types of state**:
+
+- **Private state** is structured around **notes** and tracked using Merkle trees of notes and nullifiers (we will define all of that in a bit).
+- **Public state** resembles a traditional Ethereum-style network, with global state updates written to a public data tree.
+
+In the rest following pages, we’ll define key terms—like UTXOs, notes, nullifiers, zero-knowledge proofs, and circuits that form the foundation of Aztec’s privacy model. 
+
+Let's get private!
