@@ -42,7 +42,7 @@ function Home(): React.ReactElement {
       <main className={styles.main}>
         <div className={styles.centerContent}>
           <div className={styles.heroTitle}>
-            <img src="/img/logo/aztec.svg" alt="OP Handbook" className={styles.heroImage} />
+            <img src="/img/logo/aztec.svg" alt="Aztec Handbook" className={styles.heroImage} />
           </div>
           <p className={styles.description}>
            New to Aztec? This handbook is your guide through all the things you need to know before you get started. Cheers!

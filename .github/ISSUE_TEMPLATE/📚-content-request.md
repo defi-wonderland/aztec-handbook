@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-Thanks for helping shape the OP Handbook 🧭  
+Thanks for helping shape the Aztec Handbook 🧭  
 Use this template to suggest new pages, improvements, or content you feel is missing.
 
 ---
