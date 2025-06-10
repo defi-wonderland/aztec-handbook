@@ -22,7 +22,7 @@ Notes have certain properties essential for their operation and the  privacy gua
 - **No location-based relationship**: In this UTXO model, the ownership of a note is explicitly embedded within the note's data itself, rather than being implied by its storage location within a data tree. This contributes to the system's privacy by making it harder to link notes to specific accounts based on public data structures.
 
 ## The Note Hash Tree
-Instead of storing entire notes on-chain, only their note_commitments are inserted into a specialized Merkle tree called the note hash tree. This tree serves as a public record of all valid note commitments, allowing for efficient inclusion proofs. Users can prove that a specific note commitment exists within the tree without revealing the note's sensitive details.
+Instead of storing entire notes on-chain, only their `note_commitments` are inserted into a specialized Merkle tree called the note hash tree. This tree serves as a public record of all valid note commitments, allowing for efficient inclusion proofs. Users can prove that a specific note commitment exists within the tree without revealing the note's sensitive details.
 
 ## Anatomy of a Note
 Aztec.nr, the smart contract language for Aztec, simplifies the definition and management of notes through the `#[note]` attribute. When a struct is annotated with `#[note]`, the Aztec.nr macro automatically generates the necessary implementations for the NoteType, NoteHash, and Packable traits, providing the cryptographic functions required for notes to function within the protocol.
