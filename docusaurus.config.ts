@@ -40,6 +40,8 @@ const config: Config = {
           editUrl: undefined,
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
+          remarkPlugins: [require('remark-math')],
+          rehypePlugins: [require('rehype-katex')],
         },
         blog: false,
         theme: {
