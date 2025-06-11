@@ -38,7 +38,7 @@ So, let's say that Alice has a private note presenting **10 AZT** tokens. This c
 :::info
 **Reminder of the definition of Preimage:**
 
-Let $f: A \rightarrow B$ be a map between sets $A$ and $B$. Let $Y \subseteq B$. Then the preimage of $Y$ under $f$ is denoted by $f^{-1}(Y)$, and is the set of all elements of $A$ that map to elements in $Y$ under $f$. Thus $f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}$.
+Let $$f: A \rightarrow B$$ be a map between sets $A$ and $B$. Let $Y \subseteq B$. Then the preimage of $Y$ under $f$ is denoted by $f^{-1}(Y)$, and is the set of all elements of $A$ that map to elements in $Y$ under $f$. Thus $f^{-1}(Y) = \{a \in A \mid f(a) \in Y\}$.
 
 In other words, the preimage of a set $Y \subseteq B$ is made up of all the elements in the domain $A$ that, when plugged into the function $f$, give you something inside $Y$. You're essentially tracing the function backwards from the set $Y$ in the codomain, and collecting all the inputs from $A$ that map to it.
 :::
