@@ -27,6 +27,7 @@ When a user spends a UTXO:
 1. They demonstrate possession of the object by using a secret key.
 2. They prove the note exists in the note tree.
 3. They generate a **nullifier** to prevent double-spending. **Nothing** in the proof or the nullifier is observable from the outside to be linked to the 1st UTXO "storage variable".
+4. They prove the nullifier wasn't previously in the nullifier tree.
 :::note Concept
 We will define nullifier in the following sections.
 :::
