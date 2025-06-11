@@ -36,10 +36,8 @@ A conceptual representation of a custom note struct in Aztec.nr might look like 
 ```rust
 #[note]
 struct CustomNote {
-    data: Field,            // The actual value or data encapsulated (e.g. amount of tokens)
-    owner: AztecAddress,    // The recipient's AztecAddress, to whom the note is encrypted
-    randomness: Field,      // A unique random value to ensure note uniqueness and prevent linkage
-    storage_slot: Field,    // Identifies the storage slot where this note type is stored in the contract
+    data: Field,
+    owner: Address,
 }
 ```
 
@@ -55,7 +53,8 @@ impl NoteHash for CustomNote {
     //...
 }
 ```
-
+:::tip reference
+For further information, refer to 
 Here, `self.pack()` serializes the note's internal fields into an array of Field elements. This array, combined with the `storage_slot`, is then hashed using `poseidon2_hash_with_separator`, and a `GENERATOR_INDEX__NOTE_HASH` which ensures domain separation for note commitments.
 
 ## Nullifier Generation (`compute_nullifier`)
