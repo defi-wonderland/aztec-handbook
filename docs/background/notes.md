@@ -112,7 +112,10 @@ Once a note's nullifier is published and included in the nullifier tree, that no
 A key aspect of the UTXO model is that spending a note often involves creating one or more new notes. For example, if a user spends a larger note to make a smaller payment, the original note is nullified, and two new notes are created: one for the recipient (the payment) and one for the sender (the "change"). This mechanism elegantly decouples the actions of creating, updating, and deleting private state.
 
 ## Private Payment Example
-Now, an example of a private payment: let's say that Alice wants to pay Bob 25 DAI privately.
+
+Now, an example of a private payment: let's say that Alice wants to pay Bob 25 DAI privately. In a highlevel:
+
+![Private Transaction Diagram](../../static/img/diagrams/private-transaction-flow.png)
 
 ### Sender's Action (Alice):
 
