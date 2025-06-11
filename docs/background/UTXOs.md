@@ -1,6 +1,6 @@
 # UTXOs
 
-A UTXO (Unspent Transaction Output) is a cryptographically private record representing a commitment to a value (e.g. a token amount or a state) that has not yet been spent. Inspired by Bitcoin's model, Aztec uses UTXOs to represent discrete state fragments that are consumed and replaced by new UTXOs in a transaction.
+A UTXO (Unspent Transaction Output) is a cryptographic record representing a commitment to a value (e.g. a token amount or a state) that has not yet been spent. Inspired by Bitcoin's model, Aztec uses UTXOs to represent discrete state fragments that are consumed and replaced by new UTXOs in a transaction.
 
 Each UTXO contains:
 
