@@ -52,6 +52,6 @@ A UTXO goes through several states during its lifecycle:
 1. **Creation**: When a new UTXO is created, its commitment is inserted into the note tree
 2. **Active**: The UTXO exists in the note tree and can be spent
 3. **Spent**: When spent, a nullifier is generated and the UTXO is effectively destroyed
-4. **Replacement**: New UTXOs are created to replace the spent ones, maintaining the total value
+4. **Replacement**: New UTXOs are created to replace the spent ones. In the case of a token, they will maintain the total value. 
 :::
 
