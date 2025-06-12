@@ -5,37 +5,43 @@ A UTXO (Unspent Transaction Output) is a cryptographic record representing a com
 Each UTXO contains:
 
 - A payload (e.g. value, owner's public key, asset ID)
-- A commitment, which is a cryptographic hash that binds the **note** data and associated randomness.
+- A commitment, a cryptographic hash that binds together the payload and some associated randomness, locking the data in a private and unforgeable container.
+- A position in a [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree) used to verify existence and support efficient lookups.
+- A reference to an owner who can later spend the UTXO via a Zero Knowledge Proof (optional in some cases).
 
-:::note concept
-For a detailed explanation of notes and their implementation, see the [Notes](./notes.md) section.
-:::
-
-- A position in a [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree) known as the note tree.
-- A reference to an owner who can later spend the UTXO via a Zero Knowledge Proof (Optional)
-
-Unlike Bitcoin, this UTXOs are **private**, and represent arbitrary data rather than just currency.
+Unlike Bitcoin, these UTXOs are **private** and can represent **arbitrary data**, not just currency.
 
 We can think of a UTXO as an object with the following fields:
 
 - `value`: The amount or data represented
 - `owner_pub_key`: Public key of the UTXO owner
 - `asset_id`: Identifier of the token or state type
-- `nonce` or `randomness`: To prevent note collisions
-- `commitment`: `Hash(note data || nonce)`
+- `nonce` or `randomness`: To prevent collisions between UTXOs with similar payloads
+- `commitment`: `Hash(payload, randomness)`
+
+### Spending a UTXO
 
 When a user spends a UTXO:
+
 1. They demonstrate possession of the object by using a secret key.
-2. They prove the note exists in the note tree.
-3. They generate a **nullifier** to prevent double-spending. **Nothing** in the proof or the nullifier is observable from the outside to be linked to the 1st UTXO "storage variable".
-4. They prove the nullifier wasn't previously in the nullifier tree.
+2. They prove the UTXO exists in the Merkle tree without revealing its contents.
+3. They generate a **nullifier**, that is like a fingerprint that ensures this UTXO cannot be used again.  
+   **Nothing** in the proof or the nullifier reveals which UTXO is being spent.
+4. They prove that the nullifier wasn't previously recorded in the nullifier tree.
+
 :::note Concept
 We will define nullifier in the following sections.
 :::
-4. They create new UTXOs for the recipients.
 
-So, let's say that Alice has a private note presenting **10 AZT** tokens. This commitment is inserted into the **note tree**. When Alice wants to spend this note, she will:
-- Prove that she knows the preimage
+5. They create new UTXOs for recipients, each with its own encrypted commitment.
+
+### Example: Private Transfer
+
+Let’s say Alice holds a private UTXO containing **10 AZT** tokens. This UTXO's commitment is inserted into the Merkle tree.
+
+When Alice wants to spend it, she:
+
+- Proves she knows the preimage of the commitment (e.g. the original value, asset type, key, and randomness).
 
 :::info
 **Reminder of the definition of Preimage:**
@@ -49,16 +55,16 @@ In other words, the preimage of a set $Y \subseteq B$ is made up of all the elem
 You're essentially tracing the function backwards from the set $Y$ in the codomain, and collecting all the inputs from $A$ that map to it.
 :::
 
-- Generate a nullifier for this note
-- Push the nullifier to the nullifier tree
-- Create a new note (UTXO) for Bob with the 10 AZT tokens
-- Emit the note to Bob encrypted with their public key
+- Generates a nullifier for the spent UTXO
+- Publishes the nullifier to the nullifier tree
+- Creates a new UTXO for Bob containing the 10 AZT, encrypted with his public key
 
 :::note UTXO Lifecycle
 A UTXO goes through several states during its lifecycle:
-1. **Creation**: When a new UTXO is created, its commitment is inserted into the note tree
-2. **Active**: The UTXO exists in the note tree and can be spent
-3. **Spent**: When spent, a nullifier is generated and the UTXO is effectively destroyed
-4. **Replacement**: New UTXOs are created to replace the spent ones. In the case of a token, they will maintain the total value. 
-:::
 
+1. **Creation**: A new UTXO is created and its commitment inserted into the Merkle tree.
+2. **Active**: The UTXO exists in the tree and can be spent.
+3. **Spent**: When used, a nullifier is generated and the UTXO becomes invalid.
+4. **Replacement**: New UTXOs are created to replace the spent ones. In the case of tokens, total value is preserved.
+
+:::
