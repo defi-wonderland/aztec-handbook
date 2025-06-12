@@ -4,7 +4,7 @@ A UTXO (Unspent Transaction Output) is a cryptographic record representing a com
 
 Each UTXO contains:
 
-- An encrypted payload (e.g. value, owner's public key, asset ID)
+- A payload (e.g. value, owner's public key, asset ID)
 - A commitment, which is a cryptographic hash that binds the **note** data and associated randomness.
 
 :::note concept
