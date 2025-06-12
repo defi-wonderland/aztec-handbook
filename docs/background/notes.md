@@ -42,7 +42,7 @@ struct CustomNote {
 ```
 
 :::note reference
-See [this file] (https://github.com/AztecProtocol/aztec-packages/blob/2b9c409698cf0f475a7a9f5884117c8ad2a4f79a/noir-projects/aztec-nr/aztec/src/macros/notes.nr#L351) for further reference.
+See [this file](https://github.com/AztecProtocol/aztec-packages/blob/2b9c409698cf0f475a7a9f5884117c8ad2a4f79a/noir-projects/aztec-nr/aztec/src/macros/notes.nr#L351) for further reference.
 :::
 
 ## Note Commitment Calculation (`compute_note_hash`)
