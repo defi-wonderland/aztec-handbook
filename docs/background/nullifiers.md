@@ -1,5 +1,3 @@
-// TO-DO: Add details on implementation
-
 # Nullifiers
 
 A nullifier is a unique *cryptographic fingerprint* derived from a spent note. It acts as a non-linkable yet verifiable proof of spend, allowing the protocol to prevent double-spending while maintaining privacy.
@@ -8,57 +6,94 @@ Each nullifier is deterministically derived from a note and the secret key of th
 
 - It cannot be reverse-engineered to reveal the note or spender.
 - It does not link to the new notes being created in the same transaction.
-- It ensures that each note can be spent only once.
+- It ensures that each note can be spent only once under the intended semantics.
 
-Nullifiers are inserted into a **nullifier tree**. A transaction is valid only if the nullifiers it generates are not already present in the tree.
+Nullifiers are inserted into a **nullifier tree**. A transaction is valid only if the nullifiers it generates are not already present in the tree. In Aztec, nullifiers are *siloed* by contract address before being inserted into the tree, ensuring they are unique to a contract and cannot be reused across different contracts.
+
+:::note Reference
+The implementation of the `compute_siloed_note_nullifier` is detailed [here](https://github.com/AztecProtocol/aztec-packages/blob/2b9c409698cf0f475a7a9f5884117c8ad2a4f79a/noir-projects/aztec-nr/aztec/src/note/utils.nr#L77-L90). 
+:::
 
 Some properties are that they are:
-- One-to-one: Each note has exactly one nullifier
-- Non-malleable: Cannot be modified without invalidating the proof
-- Unlinkable: Does not reveal which note or who spent it
-- Deterministic and unique: Prevents reuse of a note
 
-It will be computed as `nullifier = H(note_secret_data || secret_key || constant)`, where `note_secret_data` includes value, randomness, and asset type, the `secret_key` is associated with the note's owner, `H` is collision-resistant hash function and the `constant` is circuit-specific and ensures domain separation. 
+- **Usually one-to-one**: Each note typically has exactly one nullifier when spent, although there are valid patterns (e.g. delegated actions) where a single note may produce multiple nullifiers.
+- **Non-malleable**: Cannot be modified without invalidating the proof.
+- **Unlinkable**: Does not reveal which note or who spent it.
+- **Deterministic and unique**: Prevents the reuse of a note within its specific context.
 
-So, let's say that Alice owns a note where:
+A canonical computation is:  
+`nullifier = H(note_secret_data, secret_key, constant)`
+
+Where:
+- `note_secret_data` includes value, randomness, and asset type.
+- `secret_key` is tied to the note's owner.
+- `H` is a collision-resistant hash function, specifically `poseidon2_hash_with_separator`.
+
+:::note Reference
+For reference in `poseidon2_hash_with_separator`, see [this line](https://github.com/AztecProtocol/aztec-packages/blob/a45107e7f95b675cb2768b6bcb06483b511141f4/noir-projects/aztec-nr/aztec/src/hash.nr#L7).
+:::
+
+- `constant` ensures domain separation and is circuit-specific.
+
+#### Example (Basic Spending):
+Alice owns a note with:
 - `value = 10`
 - `owner_pub_key = H(secret_key)`
 - `randomness = r1`
 
-When spending the note, she computes: `nullifier = hash(H(10, r1, asset_id), secret_key, CONST)`. This nullifier is then inserted into the tree and any future attempt to spend the same note will result in a duplicate nullifier and cause the transaction to be rejected. 
+To spend it, she computes:  
+`nullifier = H(H(10, r1, asset_id), secret_key, CONST)`
+
+This nullifier is inserted into the tree. Any future attempt to reuse the same note will produce a duplicate nullifier and fail.
+
+## Delegated Nullifiers (One-to-Many Case)
+
+Some systems extend the nullifier model to support *multiple actions per note*, while still preventing duplicate executions. For example, consider **voting with a delegated note**:
+
+- A delegator shares their balance note with a delegatee.
+- The delegatee cannot see the note's amount but can act (e.g. vote) on its behalf.
+- For each voting action, the system generates a **distinct nullifier** based on:
+  - The delegated note.
+  - The **tally (contract) address**.
+  - A **nonce** to avoid collisions.
+
+A delegated nullifier might be computed as:  
+`nullifier = H(delegated_note, tally_address, nonce)`
+
+In this model:
+- The delegated note remains reusable across multiple votes.
+- The system tracks each action individually by enforcing **per-action nullification**, not whole-note nullification.
+- The original note may only be fully nullified when the delegation is revoked or modified.
 
 ## Nullifier Tree
-As we briefly commented in the previous section, a **Nullifier Tree** is a **Merkle tree** used to track all spent notes. Each entry in the tree is a **nullifier**, which uniquely and privately marks a note as having been consumed. By maintaining this structure, it enforces the single-spend rule without revealing which note was spent or by whom.
+
+As discussed earlier, a **Nullifier Tree** is a **sparse Merkle tree** used to track nullifiers. Each leaf corresponds to a nullifier that uniquely and privately marks a note as consumed (or an action as performed).
 
 It plays a central role in:
 
-- Preventing double-spending
-- Verifying transaction correctness
-- Ensuring that the same note cannot be consumed more than once
+- Preventing double-spending or re-use.
+- Verifying transaction correctness.
+- Ensuring unique execution of actions.
 
-The key properties of it are that:
+Key properties:
 
-- Append-only: Nullifiers are only ever added.
-- Public visibility: Nullifiers are revealed and stored on-chain.
-- Efficient verification: Tree structure allows $O(\log n)$ inclusion checks.
-- Privacy-preserving: Nullifiers do not reveal the underlying note or its owner.
+- **Append-only**: Nullifiers are only ever added.
+- **Public visibility**: Nullifiers are revealed and stored on-chain.
+- **Efficient verification**: Tree structure enables $O(\log n)$ inclusion checks.
+- **Privacy-preserving**: Nullifiers reveal neither the original note nor the spender.
 
-To be more specific, the nullifier tree is a **sparse** Merkle tree:
+### Flow Overview
 
-- Each leaf corresponds to a nullifier
-- Nodes are stored in a hash-based format to support efficient lookups and updates
-- A nullifier's index in the tree is derived from its hash (or commitment field)
+1. **Spending**:
+    - A note is consumed in a private function.
+    - A nullifier is computed and emitted.
+    - It is appended to the nullifier tree.
 
-The flow would be:
+2. **Verification**:
+    - Before a transaction is accepted, each nullifier is checked.
+    - The system proves none of them are already in the tree using functions like [`prove_nullifier_non_inclusion`](https://github.com/AztecProtocol/aztec-packages/blob/a45107e7f95b675cb2768b6bcb06483b511141f4/noir-projects/aztec-nr/aztec/src/history/nullifier_non_inclusion.nr#L23-L55).
+    - For spent notes, the system can prove inclusion using [`prove_nullifier_inclusion`](https://github.com/AztecProtocol/aztec-packages/blob/a45107e7f95b675cb2768b6bcb06483b511141f4/noir-projects/aztec-nr/aztec/src/history/nullifier_inclusion.nr#L21-L45).
 
-1. During Spending:
-    - A note is consumed in a private function
-    - A nullifier is computed and emitted
-    - This nullifier is appended to the nullifier tree
-2. During Verification:
-    - Before a transaction is accepted, its nullifiers are checked
-    - The system proves that each nullifier is not already in the tree
-    - This ensures that the associated note hasn’t been spent before
-3. During Synchronization:
-    - Clients and provers track the latest nullifier tree root
-    - The Merkle path to a nullifier allows efficient proof of (non-)existence
+3. **Synchronization**:
+    - Clients and provers sync the latest tree root.
+    - Merkle paths allow proving non-existence efficiently.
