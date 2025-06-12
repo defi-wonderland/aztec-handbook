@@ -11,6 +11,8 @@ Unlike account-based models common in Ethereum, where each account is tied to a 
 ## Properties 
 Notes have certain properties essential for their operation and the  privacy guarantees:
 
+- **Append Only**: Notes cannot be modified and they are always linked to a specific contract that can access them.
+
 - **Cryptographically committed**: Notes themselves are never stored in their raw, unencrypted form directly on-chain. Instead, a cryptographic hash of the note, known as the note_commitment, is computed and stored. This commitment allows for verification of the note's existence and integrity without revealing its sensitive contents.
 
 - **Encrypted and privately owned**: The actual note data is encrypted using the recipient's **public key**. This ensures that only the intended owner, possessing the corresponding secret viewing key, can decrypt and access the note's information.
