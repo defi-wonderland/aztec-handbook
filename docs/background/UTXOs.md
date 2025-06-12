@@ -50,6 +50,7 @@ You're essentially tracing the function backwards from the set $Y$ in the codoma
 :::
 
 - Generate a nullifier for this note
+- Push the nullifier to the nullifier tree
 - Create a new note (UTXO) for Bob
 
 :::note UTXO Lifecycle
