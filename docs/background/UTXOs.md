@@ -51,7 +51,8 @@ You're essentially tracing the function backwards from the set $Y$ in the codoma
 
 - Generate a nullifier for this note
 - Push the nullifier to the nullifier tree
-- Create a new note (UTXO) for Bob
+- Create a new note (UTXO) for Bob with the 10 AZT tokens
+- Emit the note to Bob encrypted with their public key
 
 :::note UTXO Lifecycle
 A UTXO goes through several states during its lifecycle:

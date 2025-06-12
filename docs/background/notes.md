@@ -107,7 +107,7 @@ The journey of a Note involves the following stages:
 
 - **Note Discovery:** One of the primary challenges in UTXO models is for users to efficiently identify and decrypt the notes that belong to them without downloading and brute-forcing decryption attempts on the entire blockchain.
 
-The challenge here is that traditional approaches like trial-decrypting all notes become computationally expensive as the network grows and can introduce reliance on third-party servers. Off-chain communication for note delivery, while efficient, introduces reliance on side channels.
+The challenge here is that traditional approaches like trial-decrypting all notes become computationally expensive as the network grows and can introduce reliance on third-party servers. Off-band communication for note delivery, while efficient, introduces reliance on side channels.
 
 The solution to this is **note tagging**. When a note is created, the sender generates a unique *"tag"* for the log in which the note is embedded. This tag is derived from a shared secret between the sender and recipient, along with a shared index (a counter that increments with each note exchanged between them). Critically, only the sender and recipient can identify this tag. The Aztec node exposes an API (`getLogsByTags()`) that allows users to efficiently query logs matching specific tags, significantly streamlining note discovery. Aztec.nr further abstracts this for developers, allowing for custom note types and discovery methods.
 
