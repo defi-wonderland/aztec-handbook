@@ -30,11 +30,6 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Contracts',
-      items: ['contracts/overview'],
-    },
-    {
-      type: 'category',
       label: 'Governance',
       items: ['governance/overview'],
     },
