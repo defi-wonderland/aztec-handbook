@@ -15,9 +15,9 @@ We can think of a UTXO as an object with the following fields:
 
 - `value`: The amount or data represented
 - `owner_pub_key`: Public key of the UTXO owner
-- `asset_id`: Identifier of the token or state type
-- `nonce` or `randomness`: To prevent collisions between UTXOs with similar payloads
-- `commitment`: `Hash(payload, randomness)`
+- `randomness`: Used to prevent brute-force attacks and deducing the commitment from the value and owner
+- `nonce`: A hidden value added by Aztec to prevent collisions when creating the same note with the same randomness multiple times
+- `commitment`: `Hash(value, owner_pub_key, randomness, nonce)`
 
 ### Spending a UTXO
 
