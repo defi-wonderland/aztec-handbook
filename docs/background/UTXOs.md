@@ -19,15 +19,15 @@ We can think of a UTXO as an object with the following fields:
 - `nonce`: A hidden value added by Aztec to prevent collisions when creating the same note with the same randomness multiple times
 - `commitment`: `Hash(value, owner_pub_key, randomness, nonce)`
 
-### Spending a UTXO
+### Spending a UTXO Token Balance
 
-When a user spends a UTXO:
+When a user spends a UTXO representing a token balance:
 
-1. They demonstrate possession of the object by using a secret key.
+1. They demonstrate possession of the token balance by using a secret key.
 2. They prove the UTXO exists in the Merkle tree without revealing its contents.
-3. They generate a **nullifier**, that is like a fingerprint that ensures this UTXO cannot be used again.  
-   **Nothing** in the proof or the nullifier reveals which UTXO is being spent.
-4. They prove that the nullifier wasn't previously recorded in the nullifier tree.
+3. They generate a **nullifier**, which acts as a unique fingerprint ensuring this UTXO token balance cannot be used again.  
+   **Nothing** in the proof or the nullifier reveals which specific UTXO token balance is being spent.
+4. They prove that the nullifier wasn't previously recorded in the nullifier tree, ensuring the token balance is not double-spent.
 
 :::note Concept
 We will define nullifier in the following sections.
