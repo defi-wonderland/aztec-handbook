@@ -95,6 +95,7 @@ impl NoteHash for CustomNote {
 :::tip Tip
 Notice that this is only achievable if the Note data includes the owner
 :::
+
 The `owner_npk_m_hash` is a hash of the owner's nullifier public key material, which is used to request the secret from the user's Private Execution Environment (PXE). This secret is then combined with the `note_hash_for_nullify` and hashed using `poseidon2_hash_with_separator` (with `GENERATOR_INDEX__NOTE_NULLIFIER` for domain separation) to produce the unique nullifier. This design ensures that only the rightful owner can generate the correct nullifier for their note.
 
 :::note 
@@ -130,8 +131,6 @@ A key aspect of the UTXO model is that spending a note often involves creating o
 
 Now, an example of a private payment: let's say that Alice wants to pay Bob 25 DAI privately. In a highlevel:
 
-![Private Transaction Diagram](../../static/img/diagrams/private-transaction-flow.png)
-
 ### Sender's Action (Alice):
 
 Alice currently holds a larger DAI note, for instance, a 100 DAI note. To send 25 DAI to Bob, her private circuit first nullifies her existing 100 DAI note by generating and publishing its nullifier to the nullifier tree.
@@ -142,7 +141,11 @@ Simultaneously, Alice's circuit creates two new notes:
 
 - A 75 DAI "change" note, encrypted back to Alice's own public key.
 
+![Alice PXE](../../static/img/diagrams/alice-pxe.png)
+
 The commitments for these two newly created notes, along with the nullifier of the original 100 DAI note, are included in the transaction and posted on-chain.
+
+![Commitment](../../static/img/diagrams/commitment.png)
 
 ### Recipient's Action (Bob):
 
@@ -151,6 +154,8 @@ Bob's PXE continuously monitors the network for encrypted logs. It specifically 
 Upon finding the encrypted log containing the 25 DAI note, Bob's PXE decrypts it using his secret viewing key.
 
 The decrypted 25 DAI note is then added to Bob's local PXE database, making it available for future spending.
+
+![Bob Discovery](../../static/img/diagrams/bob-discovery.png)
 
 ### Spending the Received Note (Bob):
 
