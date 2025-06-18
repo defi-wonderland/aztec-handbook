@@ -48,7 +48,7 @@ To obscure read operations from write operations:
 * Even reads emit nullifiers.
 * A fresh note (with same plaintext but new randomness) is created.
 
-This ensures **semantic indistinguishability** from writes. The cost is that shared notes between users become mutable—once read, they’re re-emitted, invalidating other transactions that depended on the original.
+This ensures **semantic indistinguishability** from writes. The cost is that shared notes between users become mutable, once read, they’re re-emitted, invalidating other transactions that depended on the original.
 
 ## State Categories and Merkle Tree Types
 
