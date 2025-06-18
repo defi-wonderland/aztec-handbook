@@ -1,4 +1,4 @@
-# Stack and State Overview 
+# Overview 
 
 Aztec's global state is a cryptographically authenticated set of data structures that encode the persistent status of the network, updated only when new L2 blocks are sequenced and verified. It is structured as a collection of cryptographic Merkle trees, each serving distinct roles in maintaining privacy, preventing double-spends, synchronizing with L1, and executing public contract logic.
 
@@ -96,7 +96,7 @@ State commitments in Aztec block headers include snapshots of each tree. These e
 * Stateless proving from archived block roots
 * Efficient syncing via tree frontiers
 
-![trees](/aztec-handbook/static/img/diagrams/trees-relationship.png)
+![trees](/img/diagrams/trees-relationship.png)
 
 Each `Snapshot` includes the Merkle root and the next available leaf index to enforce append-only semantics.
 
