@@ -11,7 +11,22 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Stack',
-      items: ['stack/overview', { type: 'category', label: 'Public State', items: ['stack/public-state/storage', 'stack/public-state/indexed-merkle-tree', ] }],
+      items: ['stack/overview', { 
+        type: 'category', label: 'Public State', items: [
+          'stack/public-state/storage', 
+          'stack/public-state/indexed-merkle-tree', 
+          'stack/public-state/settlement', 
+          'stack/public-state/avm'
+        ] 
+      },
+      { 
+        type: 'category', label: 'Private State', items: [
+          'stack/private-state/pxe-and-notes', 
+          'stack/private-state/transaction-lifecycle',
+          'stack/private-state/private-kernel' 
+        ] 
+      },
+    ],
     },
     {
       type: 'category',
