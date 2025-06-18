@@ -6,7 +6,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Background',
-      items: ['background/overview'],
+      items: ['background/overview', 'background/UTXOs', 'background/notes', 'background/nullifiers', 'background/zero-knowledge-proofs', 'background/zk-circuits'],
     },
     {
       type: 'category',
@@ -27,11 +27,6 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Privacy',
       items: ['privacy/overview'],
-    },
-    {
-      type: 'category',
-      label: 'Contracts',
-      items: ['contracts/overview'],
     },
     {
       type: 'category',

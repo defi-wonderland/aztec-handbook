@@ -8,7 +8,7 @@ const categories = [
   {
     title: 'Background',
     icon: '/img/specialization.svg',
-    href: '/docs/previous-knowledge/overview',
+    href: '/docs/background/overview',
   },
   {
     title: 'Stack',

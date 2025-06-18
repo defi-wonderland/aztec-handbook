@@ -10,6 +10,11 @@ This repository contains the Onboarding to Aztec by Wonderland, a documentation 
   - `docusaurus.config.js` - Main Docusaurus configuration
   - `sidebar.ts` - Indexer for the docs
 
+### Content
+
+This is a **work in progress**, this is the map of content we want to include (purple is to-do and orange is in progress):
+![Handbook Structure](static/img/diagrams/structure-handbook.png)
+
 ## Development
 
 ### Prerequisites
