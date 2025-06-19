@@ -22,7 +22,7 @@ To enforce contract-level isolation, the final storage key is **siloed** using t
 siloed_slot = hash([contract_address, raw_slot], PUBLIC_DATA_LEAF)
 ```
 
-This allow us to say that one contract cannot overwrite another contract’s state, even if their raw slot encodings collide.
+This means that one contract cannot overwrite another contract’s state, even if their raw slot encodings collide.
 
 ## AVM Memory Model and Type Safety
 
