@@ -1,146 +1,198 @@
-# Settlement
+# Settlement & Cross‑Layer Messaging 
 
-This article covers the technical implementation of settlement and cross-layer messaging in the Aztec network. It describes how Aztec leverages a zkRollup architecture to compress private and public execution traces, how messages are passed between L1 and L2 using message boxes, and how key contracts like the `Rollup`, `Inbox`, and `Outbox` facilitate state synchronization, data availability, and communication integrity.
+Aztec finalises every L2 block on Ethereum **and** ferries data between the two layers without leaking private information.  This note first introduces the *portal/message‑box* abstraction that makes private cross‑layer calls possible, then walks through a single block from proof generation to message consumption.
 
-## Rollup-Based Settlement
 
-Aztec is a zkRollup. All state transitions — public and private — are ultimately proven and settled on L1 via the `Rollup` contract. This contract is responsible for:
+## Portals and Message Boxes: the Big Idea
 
-* Storing and updating the canonical L2 state root.
-* Verifying zk-proofs for rollup blocks.
-* Emitting events to expose data for indexing/syncing.
-* Managing validator set commitments and slashing via `Staking`, `Emperor`, `GSE`.
+**Portals** are the L1 counter‑parts of Aztec contracts. A portal can be an L1 contract or even an EOA, but it is *logically* linked to a specific L2 address. 
 
-Proofs submitted to the rollup are validated via a verifier contract (`IVerifier`) and must prove a correct state transition from state `S` to `S'`, via application of a rollup block `B`, such that:
-
+```text
+L1 portal  ↔  L2 contract
 ```
-T(S, B) => S'
-```
+Because private execution is prepared off‑chain, Aztec cannot do a synchronous `CALL` from L2 → L1 (or vice‑versa) without leaking inputs. Instead it turns every cross‑domain call into a **message** that is:
 
-Rollup proofs include:
+1. **Inserted** on the *sending* layer (`pending` set).
+2. **Moved** by the rollup proof to the *receiving* layer (`ready` set).
+3. **Consumed** exactly once by the recipient, producing a nullifier.
 
-* A `header` encoding block metadata.
-* Membership witnesses for message insertions (Inbox) and nullifications (Outbox).
-* Updated Merkle roots for the public data tree, archive, inbox, outbox.
+We call the data structure that stores these leaves a **Message Box**.  There are two of them:
 
-The `Rollup` contract references the `Inbox`, `Outbox`, and `FeeJuicePortal` contracts and uses them to synchronize messages, fees, and side-channel data.
+| Direction | Pending set lives on | Ready set lives on | Contract     |
+| --------- | -------------------- | ------------------ | ------------ |
+| L1 → L2   | `Inbox` (L1)         | Private state (L2) | `Inbox.sol`  |
+| L2 → L1   | Private state (L2)   | `Outbox` (L1)      | `Outbox.sol` |
 
-## L1 to L2 Messaging: Inbox
+:::note Properties
+* Messages are *multi‑sets*: identical payload can be inserted many times.
+* Only the recipient can spend a message.
+* The rollup moves leaves atomically (`pending → ready`). If the proof lies, verification fails.
+:::
 
-The `Inbox` contract lives on L1 and accepts messages destined for L2. It maintains a rolling forest of append-only trees (using the `FrontierTree` pattern) to structure incoming messages.
+### Why *pulling* instead of *pushing*?
 
-### Core Concepts
+Other roll‑ups **push** calldata from their bridge contract into user contracts, revealing full parameters. Aztec **pulls**:  the L1 portal calls its own logic and then **pulls** the corresponding message out of the Outbox. For deposits this leaks the amount on L1 (that’s inevitable) but hides the L2 recipient and the exact block in which it is claimed.
 
-* **Inbox State**: Maintains `rollingHash`, `totalMessagesInserted`, and `inProgress` block number.
-* **Tree Insertion**: Messages are inserted into Merkle trees per L2 block (`trees[blockNumber]`).
-* **Indexing**: Global leaf index = `(block - genesisBlock) * size + local index`.
+### Message formats
 
-### Interfaces
+Below is **precisely** what gets hashed, stored, and verified at each hop. There are three layers:
+
+| Layer                  | Purpose                                                     | Solidity / TS type          |
+| ---------------------- | ----------------------------------------------------------- | --------------------------- |
+| **Application**        | Arguments your portal passes (`recipient`, `payload` …)     | `L1ToL2Msg`, `L2ToL1Msg`    |
+| **Commitment**         | Single 254‑bit field inserted into Merkle tree              | `leaf = sha256ToField(msg)` |
+| **Sequencer DB / RPC** | Extra provenance so the sequencer can resume after a re‑org | `InboxMessage`              |
 
 ```solidity
-function sendL2Message(
-  L2Actor _recipient,
-  bytes32 _content,
-  bytes32 _secretHash
-) external returns (bytes32, uint256);
-```
+// packages/contracts/src/core/libraries/DataStructures.sol
 
-* `_content` is 32 bytes, directly stored or a hash commitment.
-* `_secretHash` enables nullifier privacy for future consumption.
+struct L1Actor {
+  address actor;      // who sends on L1
+  uint256 chainId;    // = block.chainid (anti‑replay)
+}
 
-Each message is represented by:
+struct L2Actor {
+  bytes32 actor;      // Aztec address (field element)
+  uint256 version;    // roll‑up version to prevent fork griefing
+}
 
-```solidity
 struct L1ToL2Msg {
-  L1Actor sender;
-  L2Actor recipient;
-  bytes32 content;
-  bytes32 secretHash;
-  uint256 index;
+  L1Actor  sender;       // auto‑filled as msg.sender + chainId
+  L2Actor  recipient;    // supplied by caller (portal knows its L2 pair)
+  bytes32  content;      // 32 B payload **or** sha256(bigPayload)
+  bytes32  secretHash;   // commitment to random `r` → hides nullifier timing
+  uint256  index;        // globalLeafIdx = treeNum * SIZE + localIdx
+}
+
+struct L2ToL1Msg {
+  L2Actor  sender;
+  L1Actor  recipient;
+  bytes32  content;
+  // `index` lives in the Outbox leaf, same idea as above
 }
 ```
 
-These are SHA256-hashed to a field element and inserted into the inbox tree.
+`L1ToL2Msg` and `L2ToL1Msg` are flattened → hashed with **SHA‑256 >> Field**¹. That 254‑bit field is the **only thing the Merkle tree stores**.
 
-### Consumption
+```ts
+// packages/foundation/src/message_bridge/inbox_message.ts
 
-Inbox trees are consumed by the `Rollup` contract via:
-
-```solidity
-function consume(uint256 blockNumber) external returns (bytes32);
+export type InboxMessage = {
+  index:         bigint;   // == L1ToL2Msg.index (global)
+  leaf:          Fr;       // sha256ToField(L1ToL2Msg)
+  l2BlockNumber: UInt32;   // tree number (‘inProgress’ when inserted)
+  l1BlockNumber: bigint;   // for re‑org detection / proofs
+  l1BlockHash:   Buffer32; // header hash at insertion time
+  rollingHash:   Buffer16; // keccak16(chainLeafs), cheap block digest
+};
 ```
 
-This returns the root of the message tree for block `blockNumber`, making it available to the rollup circuit.
+:::note note
+`sha256ToField(x)` = `BigInt(SHA256(x)) mod BN254_P`. The contracts use `Hash.sha256ToField()`, the circuits use the exact same constant.
+:::
+#### Field‑by‑field cheat‑sheet
 
-## L2 to L1 Messaging: Outbox
+| Field         | Where stored              | Why it exists                                               | Contract ref                                |
+| ------------- | ------------------------- | ----------------------------------------------------------- | ------------------------------------------- |
+| `index`       | Inbox tree leaf & bitmap  | Uniqueness + nullifier derivation                           | `Inbox.sendL2Message()` lines 73‑80         |
+| `secretHash`  | Leaf only (not in Outbox) | Lets user prove they own the message without revealing when | Same file, constructor comment              |
+| `rollingHash` | Off‑chain DB / RPC        | Lets sequencer stream blocks with O(1) integrity            | `updateRollingHash()` in `inbox_message.ts` |
+| `l1BlockHash` | Off‑chain only            | Detect L1 re‑orgs before proposing                          |-                        |
 
-The `Outbox` is the L1-side mirror of the Inbox, designed to hold L2-emitted messages for L1 contracts to consume.
+The **`updateRollingHash`** helper:
 
-### Message Lifecycle
-
-1. L2 emits an `L2ToL1Msg`, inserted into a Merkle tree.
-2. The `Rollup` contract posts the tree root to the `Outbox`:
-
-```solidity
-function insert(uint256 l2BlockNumber, bytes32 root) external;
+```ts
+function updateRollingHash(h: Buffer16, leaf: Fr): Buffer16 {
+  const input = Buffer.concat([h.toBuffer(), leaf.toBuffer()]);
+  return Buffer16.fromBuffer(keccak256(input));
+}
 ```
 
-3. L1 contracts use inclusion proofs to consume these messages:
+This mirrors the contract logic that emits `MessageSent(block, idx, leaf, newRollingHash)` so any observer can verify no leaves were skipped.
+
+
+:::note Reference
+See [this contract](https://github.com/AztecProtocol/aztec-packages/blob/next/noir-projects/noir-protocol-circuits/crates/types/src/messaging/l2_to_l1_message.nr) and [this line](https://github.com/AztecProtocol/aztec-packages/blob/7e505bcd7fcd90a7d5fe893194272157cc9ec848/yarn-project/stdlib/src/messaging/l1_to_l2_message.ts#L18-L30) for reference.
+:::
+
+Only the **commitment** (`sha256ToField(struct)`) is inserted; the full struct is reconstructed by the circuit.
+
+## Off‑chain proof construction
+
+* Users create **Kernel proofs**, each proof contains:
+  note‑hashes, nullifiers, *inbox nullifiers* to spend, *outbox leaves* to emit.
+* Sequencer batches kernels inside **`RollupCircuit`** → outputs new roots + proof `π`.
+
+## `Rollup.sol` `propose()` on L1
 
 ```solidity
-function consume(L2ToL1Msg msg, uint256 index, bytes32[] path) external;
+require(VERIFIER.verify(proof, publicInputs));   // 1
+stateRoot   = publicInputs.stateRoot;            // 2
+inboxRoot   = publicInputs.inboxRoot;
+outboxRoot  = publicInputs.outboxRoot;
+emit BlockProven(blockNum, stateRoot);
 ```
 
-The `Outbox` internally tracks a bitmap `nullified` per message root to ensure one-time consumption.
+If step (1) fails, nothing changes. If it passes, all three roots are final.
 
-## Bidirectional Messaging via Message Boxes
+## Inbox: L1 → L2
 
-To generalize L1–L2 and public–private communication, Aztec uses the **Message Box** abstraction. Each box has:
+```solidity
+(bytes32 leaf, uint256 idx) = INBOX.sendL2Message(recipient, cHash, sHash);
+```
 
-* **Pending Set** (insertion domain)
-* **Ready Set** (consumption domain)
+* Inserts `leaf` into `FrontierTree` of the *current* L2 block (`inProgressBlock`).
+* Updates `InboxState.rollingHash` for cheap indexing.
+* `RollupCircuit` later calls `Inbox.consume(blockNum)` → Merkle root.  The circuit must
+  * prove membership for each leaf it wants to spend, and
+  * create a nullifier that will be inserted into the nullifier tree.
 
-When a message is inserted on one side (e.g., L1 Inbox), it is not directly usable on the receiving side (L2) until a rollup transitions it to the `ready` set.
+## Outbox: L2 → L1
 
-This happens inside the rollup circuits during block execution:
+During proof generation the **kernel** emits an array `out_msgs`.  Rollup inserts these into an Outbox tree and outputs the new `outboxRoot`.
 
-* `Inbox` root is read and compared to expected state.
-* Messages are inserted into the Merkle tree.
-* Their `content`, `sender`, and `recipient` are verified against constraints.
-* Their hash becomes a **nullifier**, consumed on L2.
+**On‑chain:**
 
-## Kernel and Rollup Circuits
+```solidity
+OUTBOX.insert(l2BlockNum, outboxRoot);
+```
 
-The kernel circuit validates individual Aztec transactions, including:
+A **portal** redeems:
 
-* L2-to-L1 messages to insert into the outbox.
-* L1-to-L2 message nullifiers to consume from the inbox.
+```solidity
+OUTBOX.consume(msg, idx, siblingPath);  // marks bitmap nullified[idx] = 1
+```
+## Circuit consistency checks
 
-The rollup circuit verifies a batch of transactions, along with:
+* **Kernel**: verifies sender/recipient in contract tree, ranges, secretHash linking.
+* **Rollup**: recomputes Merkle roots and compares to public inputs passed to `Rollup.sol`.
 
-* Consumed inbox trees (using roots and witness paths).
-* Produced outbox roots.
-* Public data tree updates and archive diffs.
+If any leaf or nullifier is out of place, `IVerifier.verify()` fails and the block is rejected.
 
-Each circuit validates that all cross-domain messaging is consistent with:
+## Putting it all together
 
-* Membership constraints.
-* Validity of sender/recipient pair in contract tree.
-* One-time nullifiability.
 
-## Privacy, Asynchrony, and Message Design
+|  Step | Who calls              | Code path                                                                       | Resulting state change                                                                     |
+| ----- | ---------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+|  1   | **Alice**              | `FeeJuicePortal.depositToAztecPublic()`                                         | ETH/ERC‑20 escrowed; `Inbox.sendL2Message()` inserts `leaf_A`, returns `(leaf, idx)`       |
+|  2    | **Sequencer**          | Includes `leaf_A`’s **nullifier** in Alice’s kernel proof                       | Kernel ensures `(sender == portal && recipient == L2Contract)`; outputs `inboxNullifier_A` |
+|  3   | **`RollupCircuit`**      | Consumes `inboxNullifier_A`, inserts Alice’s **L2→L1** receipt into Outbox tree | Produces new roots `inboxRoot'`, `outboxRoot'`                                             |
+|  4    | **`Rollup.sol`**         | `propose()` verifies `π` and writes the three roots                             | Emits `BlockProven` event; Inbox block `N` becomes **ready**                               |
+|  5    | **`Bob (portal owner)`** | Calls `Outbox.consume(receipt, idx, path)`                                      | Bitmap `nullified[idx] = 1`; Bob’s L1 logic mints/moves the funds                          |
 
-Because messages can’t synchronously resolve on-chain without breaking privacy, all L1↔L2 messages are **asynchronous** and **unilateral**:
+:::note note
+All intermediate steps (e.g. pointer updates inside `FrontierTree`) are enforced by circuit equality constraints, a single bad hash breaks verification.
+:::
 
-* L1 doesn’t get immediate confirmation from L2.
-* L2 doesn’t know the outcome of L1 calls it triggers.
+### The 3 things you need to remember:
 
-To preserve privacy when consuming a message, the nullifier includes a `secretHash`, ensuring that only the intended recipient with knowledge of the preimage can consume the message.
-
-Messages include only 32 bytes of `content`, but arbitrary payloads can be supported by passing `sha256(payload)` and emitting or storing full content off-chain.
+* **Async everywhere**: your L1 tx *fires‑and‑forgets*; handle retries/timeouts.
+* Use `content = sha256(bigPayload)` when 32 bytes is not enough; reveal the payload off‑chain or via an L2 event.
+* `secretHash` + nullifiers hide the exact consumption slot.
 
 ## References
 - [Portals Documentation](https://docs.aztec.network/aztec/concepts/communication/portals)
 - [Message Bridge Contract](https://github.com/AztecProtocol/aztec-packages/tree/next/l1-contracts/src/core/messagebridge)
 - [Rollup Core Contract](https://github.com/AztecProtocol/aztec-packages/blob/next/l1-contracts/src/core/RollupCore.sol)
+- [Outbox](https://github.com/AztecProtocol/aztec-packages/blob/7e505bcd7fcd90a7d5fe893194272157cc9ec848/l1-contracts/src/core/messagebridge/Outbox.sol#L14)
 - [Rollup Contract](https://github.com/AztecProtocol/aztec-packages/blob/next/l1-contracts/src/core/Rollup.sol)
