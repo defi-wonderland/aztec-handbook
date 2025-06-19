@@ -14,7 +14,6 @@ const sidebars: SidebarsConfig = {
       items: ['stack/overview', { 
         type: 'category', label: 'Public State', items: [
           'stack/public-state/storage', 
-          'stack/public-state/indexed-merkle-tree', 
           'stack/public-state/settlement', 
           'stack/public-state/avm'
         ] 
