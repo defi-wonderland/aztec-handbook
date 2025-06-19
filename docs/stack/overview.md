@@ -2,7 +2,7 @@
 
 Aztec's global state is a cryptographically authenticated set of data structures that encode the persistent status of the network, updated only when new L2 blocks are sequenced and verified. It is structured as a collection of cryptographic Merkle trees, each serving distinct roles in maintaining privacy, preventing double-spends, synchronizing with L1, and executing public contract logic.
 
-Unlike traditional blockchains that rely on single key-value Merkle tries, Aztec’s model accommodates **both private and public state** and is fundamentally shaped by the privacy constraints of zk execution. This necessitates a non-standard **dual-tree model** with asymmetric update and access semantics.
+Unlike traditional blockchains that rely on single key-value Merkle trees, Aztec’s model accommodates **both private and public state** and is fundamentally shaped by the privacy constraints of zk execution. This necessitates a non-standard **dual-tree model** with asymmetric update and access semantics.
 
 ## Dual-Tree Design for Private State
 
@@ -45,14 +45,14 @@ Instead, the **sequencer performs the non-membership check and inserts the nulli
 
 To obscure read operations from write operations:
 
-* Even reads emit nullifiers.
+* Reads also emit nullifiers.
 * A fresh note (with same plaintext but new randomness) is created.
 
 This ensures **semantic indistinguishability** from writes. The cost is that shared notes between users become mutable, once read, they’re re-emitted, invalidating other transactions that depended on the original.
 
 ## State Categories and Merkle Tree Types
 
-In Aztec, we will partition the global state across five specialized Merkle trees:
+In Aztec, global state is partitioned across five specialized Merkle trees:
 
 | Tree                   | Purpose                                      | Type        | Proof Support                                          |
 | ---------------------- | -------------------------------------------- | ----------- | ------------------------------------------------------ |
