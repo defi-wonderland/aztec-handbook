@@ -2,7 +2,7 @@
 
 Aztec's global state is a cryptographically authenticated set of data structures that encode the persistent status of the network, updated only when new L2 blocks are sequenced and verified. It is structured as a collection of cryptographic Merkle trees, each serving distinct roles in maintaining privacy, preventing double-spends, synchronizing with L1, and executing public contract logic.
 
-Unlike traditional blockchains that rely on single key-value Merkle tries, Aztec’s model accommodates **both private and public state** and is fundamentally shaped by the privacy constraints of zk execution. This necessitates a non-standard **dual-tree model** with asymmetric update and access semantics.
+Unlike traditional blockchains that rely on single key-value Merkle trees, Aztec’s model accommodates **both private and public state** and is fundamentally shaped by the privacy constraints of zk execution. This necessitates a non-standard **dual-tree model** with asymmetric update and access semantics.
 
 ## Dual-Tree Design for Private State
 
