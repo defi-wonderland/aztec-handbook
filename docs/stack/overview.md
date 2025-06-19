@@ -45,7 +45,7 @@ Instead, the **sequencer performs the non-membership check and inserts the nulli
 
 To obscure read operations from write operations:
 
-* Even reads emit nullifiers.
+* Reads also emit nullifiers.
 * A fresh note (with same plaintext but new randomness) is created.
 
 This ensures **semantic indistinguishability** from writes. The cost is that shared notes between users become mutable, once read, they’re re-emitted, invalidating other transactions that depended on the original.
