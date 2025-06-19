@@ -16,11 +16,6 @@ const categories = [
     href: '/docs/stack/overview',
   },
   {
-    title: 'Transactions & Messaging',
-    icon: '/img/processes.svg',
-    href: '/docs/transactions-and-messaging/overview',
-  },
-  {
     title: 'Governance',
     icon: '/img/governance.svg',
     href: '/docs/governance/overview',
