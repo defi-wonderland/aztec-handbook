@@ -20,8 +20,8 @@ We call the data structure that stores these leaves a **Message Box**.  There a
 
 | Direction | Pending set lives on | Ready set lives on | Contract     |
 | --------- | -------------------- | ------------------ | ------------ |
-| L1 → L2   | `Inbox` (L1)         | Private state (L2) | `Inbox.sol`  |
-| L2 → L1   | Private state (L2)   | `Outbox` (L1)      | `Outbox.sol` |
+| L1 → L2   | `Inbox` (L1)         | Private state (L2) | [`Inbox.sol`](https://github.com/AztecProtocol/aztec-packages/blob/7e505bcd7fcd90a7d5fe893194272157cc9ec848/l1-contracts/src/core/messagebridge/Inbox.sol)  |
+| L2 → L1   | Private state (L2)   | `Outbox` (L1)      | [`Outbox.sol`](https://github.com/AztecProtocol/aztec-packages/blob/7e505bcd7fcd90a7d5fe893194272157cc9ec848/l1-contracts/src/core/messagebridge/Outbox.sol#L14) |
 
 :::note Properties
 * Messages are *multi‑sets*: identical payload can be inserted many times.
