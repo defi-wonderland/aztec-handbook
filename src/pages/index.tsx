@@ -16,11 +16,6 @@ const categories = [
     href: '/docs/stack/overview',
   },
   {
-    title: 'Lifecycle',
-    icon: '/img/processes.svg',
-    href: '/docs/lifecycle/overview',
-  },
-  {
     title: 'Governance',
     icon: '/img/governance.svg',
     href: '/docs/governance/overview',

@@ -17,4 +17,4 @@ This handbook aims to help you understand and build with Aztec, the privacy-firs
 
 ## Getting Started
 
-If you're new to Aztec, we recommend starting with the [Overview](./background/overview.md) section to understand the fundamental concepts. If you're ready to start building, jump into the [Tooling](./tooling/) section to get your development environment set up.
+If you're new to Aztec, we recommend starting with the [Overview](./background/overview.md) section to understand the fundamental concepts. If you're ready to start building, jump into the [Tooling](./tooling/overview.md) section to get your development environment set up.
