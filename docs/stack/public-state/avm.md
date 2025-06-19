@@ -54,7 +54,7 @@ Everything is now ready for the main loop.
 
 ## One Clock‑Cycle in the AVM
 
-> “Instruction fetch ➜ decode ➜ sub‑ops ➜ commit” (repeat until `RETURN` or `REVERT`).
+> Instruction fetch ➜ decode ➜ sub‑ops ➜ commit (repeat until `RETURN` or `REVERT`).
 
 1. **Fetch**: `BytecodeTable.lookup(callPtr, pc)` returns an `AvmInstruction`.
 2. **Decode**: The static lookup table translates the opcode into a list of *sub‑operations*.

@@ -1,1 +1,1 @@
-![under-construction](/static/img/under-construction/wip.png)
+![under-construction](/img/under-construction/wip.png)

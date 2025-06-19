@@ -22,10 +22,10 @@ const sidebars: SidebarsConfig = {
       { 
         type: 'category', label: 'Private State', items: [
           'stack/private-state/pxe-and-notes', 
-          'stack/private-state/transaction-lifecycle',
           'stack/private-state/private-kernel' 
         ] 
       },
+      'stack/transaction-lifecycle'
     ],
     },
     {
@@ -47,6 +47,11 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Governance',
       items: ['governance/overview'],
+    },
+    {
+      type: 'category',
+      label: 'Standards',
+      items: ['standards/overview', 'standards/arc-20'],
     },
     {
       type: 'category',
