@@ -52,7 +52,7 @@ This ensures **semantic indistinguishability** from writes. The cost is that sha
 
 ## State Categories and Merkle Tree Types
 
-In Aztec, we will partition the global state across five specialized Merkle trees:
+In Aztec, global state is partitioned across five specialized Merkle trees:
 
 | Tree                   | Purpose                                      | Type        | Proof Support                                          |
 | ---------------------- | -------------------------------------------- | ----------- | ------------------------------------------------------ |
