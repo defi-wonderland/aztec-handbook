@@ -1,3 +1,3 @@
-# ARC-20: Aztec Token Standard
+# Transaction Lifecycle
 
 ![under-construction](/img/under-construction/wip.png)
