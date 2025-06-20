@@ -33,7 +33,7 @@ function Home(): React.ReactElement {
   return (
     <Layout
       title={siteConfig.title}
-      description="A curated guide to our best practices, processes, and technical insights.">
+      description="The Aztec handbook serves as a central knowledge base for the researchers, devs and architects involved in the protocol.">
       <main className={styles.main}>
         <div className={styles.centerContent}>
           <div className={styles.heroTitle}>
