@@ -46,7 +46,7 @@ The most computationally intensive task the PXE performs is generating proofs fo
 
 ## The Lifecycle of a Note in the PXE
 
-While the [Notes section](./notes.md) describes the conceptual lifecycle of a note, the PXE is where this lifecycle is practically managed. From a user's perspective, a note's journey is defined by how their PXE discovers, stores, and ultimately nullifies it.
+The PXE is where the lifecycle of a note is practically managed. From a user's perspective, a note's journey is defined by how their PXE discovers, stores, and ultimately nullifies it.
 
 ### 1. Discovery, Decryption, and Storage
 
