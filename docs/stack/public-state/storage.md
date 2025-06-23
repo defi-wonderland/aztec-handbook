@@ -9,7 +9,7 @@ This section describes how public contract state is structured, accessed, and ve
 
 ## Slot Addressing and Siloing
 
-Each public storage variable maps to a **storage slot**, which is a 254-bit field element (`Fr`) that acts as a key in the Public Data Tree.
+Each public storage variable maps to a **storage slot**, which is a ~254-bit field element (`Fr`) that acts as a key in the Public Data Tree.
 
 These slots are not hardcoded like Solidity’s storage layout, but are instead computed based on application-specific conventions. A slot is typically derived by hashing together:
 
