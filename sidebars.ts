@@ -11,7 +11,21 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Stack',
-      items: ['stack/overview'],
+      items: ['stack/overview', { 
+        type: 'category', label: 'Public State', items: [
+          'stack/public-state/storage', 
+          'stack/public-state/settlement', 
+          'stack/public-state/avm'
+        ] 
+      },
+      { 
+        type: 'category', label: 'Private State', items: [
+          'stack/private-state/pxe-and-notes', 
+          'stack/private-state/private-kernel' 
+        ] 
+      },
+      'stack/transaction-lifecycle'
+    ],
     },
     {
       type: 'category',
@@ -32,6 +46,11 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Governance',
       items: ['governance/overview'],
+    },
+    {
+      type: 'category',
+      label: 'Standards',
+      items: ['standards/overview', 'standards/arc-20'],
     },
     {
       type: 'category',
